@@ -36,16 +36,19 @@ public class A {
         Book book1 = new Book();
         book1.setName("Gold fish");
         book1.setAuthor(author1);
+        book1.setPrice(100);
         session.persist(book1);
 
         Book book2 = new Book();
         book2.setName("Saltan");
         book2.setAuthor(author1);
+        book2.setPrice(300);
         session.persist(book2);
 
         Book book3 = new Book();
         book3.setName("Gold key");
         book3.setAuthor(author2);
+        book3.setPrice(200);
         session.persist(book3);
 
 
@@ -88,12 +91,33 @@ public class A {
             System.out.println("! next book: " + next.getName());
         }
 
-        query = session.createQuery("select a from Author a join a.books b where b.name = 'Gold fish'");
-        List<Author> authors = query.list();
+        query = session.createQuery("select b from Book b where b.price between 0 and 250");
+        books = query.list();
 
-        for (Author next : authors) {
-            System.out.println("! next author: " + next.getName());
+        for (Book next : books) {
+            System.out.println("! next book: " + next.getName());
         }
+
+
+        query = session.createQuery("select a.name from Author a join a.books b where b.name = 'Gold fish'");
+        List<String> authors = query.list();
+
+        for (String next : authors) {
+            System.out.println("! next author: " + next);
+        }
+
+
+        if (!t.wasCommitted())
+            t.commit();
+
+        t = session.beginTransaction();
+        query = session.createQuery("delete from Book");
+        query.executeUpdate();
+        t.commit();
+
+
+
+        session.close();
         System.out.println("123");
     }
 }
