@@ -72,5 +72,28 @@ public class A {
         for (Book next : resultList) {
             System.out.println("next book: " + next.getName());
         }
+//
+//        crit = session.createCriteria(Author.class);
+//        crit = crit.createAlias("book","b");
+//        List<Author> authorList = crit.list();
+//        for (Author next : authorList) {
+//            System.out.println("next author: " + next.getName());
+//        }
+
+        //simple JPQLs
+        Query query = session.createQuery("select b from Book b where b.author.name = 'Pushkin'");
+        List<Book> books = query.list();
+
+        for (Book next : books) {
+            System.out.println("! next book: " + next.getName());
+        }
+
+        query = session.createQuery("select a from Author a join a.books b where b.name = 'Gold fish'");
+        List<Author> authors = query.list();
+
+        for (Author next : authors) {
+            System.out.println("! next author: " + next.getName());
+        }
+        System.out.println("123");
     }
 }
