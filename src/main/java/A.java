@@ -111,7 +111,7 @@ public class A {
             t.commit();
 
         t = session.beginTransaction();
-        query = session.createQuery("delete from Book");
+        query = session.createQuery("update Book set price = 500");
         query.executeUpdate();
         t.commit();
 
